@@ -1,5 +1,7 @@
 ﻿using GTR_WebApiTask.Model;
+using GTR_WebApiTask.Repository;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,28 +11,62 @@ namespace GTR_WebApiTask.Controllers
     [ApiController]
     public class OwnerController : ControllerBase
     {
-        [HttpGet]
-        [Authorize]
-        [Route("GetData")]
-        public string GetData()
+        ProductRepo ProRepo;
+        CategoryRepo CateRepo;
+
+        public OwnerController()
         {
-            return "Authenticated with jwt";
+            ProRepo = new ProductRepo();
+            CateRepo = new CategoryRepo();
+
         }
 
+        
+
+        //
+        [Route("api/product/All")]
         [HttpGet]
-        [Route("Details")]
-        public string Details()
+        public List<Product> GetAll()
         {
-            return "Authenticated with jwt";
+            return ProRepo.Get();
         }
 
+
+        [Route("api/product/Create")]
+        [HttpGet]
+        public List<Category> GetCat()
+        {
+            return CateRepo.Get();
+        }
+
+        
+        [Route("api/product/Create")]
         [HttpPost]
         [Authorize]
-        
-        public string AddUser(Users user)
+        public void Add(Product model)
         {
-            return "User added with username" + user.Username;
+            ProRepo.Add(model);
+
         }
+
+        [Authorize]
+        [Route("api/product/delete/{id}")]
+        [HttpPost]
+        public void Delete(int id)
+        {
+            ProRepo.Delete(id);
+        }
+
+        [Authorize]
+        [Route("api/product/update/{id}")]
+        [HttpPost]
+        public void Edit(Product model)
+        {
+            ProRepo.Edit(model);
+        }
+        //
+
+
 
     }
 }
