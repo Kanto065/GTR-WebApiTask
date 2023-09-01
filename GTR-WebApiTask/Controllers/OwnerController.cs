@@ -1,4 +1,5 @@
-﻿using GTR_WebApiTask.Model;
+﻿using GTR_WebApiTask.DB;
+using GTR_WebApiTask.Model;
 using GTR_WebApiTask.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors.Infrastructure;
@@ -11,13 +12,14 @@ namespace GTR_WebApiTask.Controllers
     [ApiController]
     public class OwnerController : ControllerBase
     {
+        taskContext db;
         ProductRepo ProRepo;
         CategoryRepo CateRepo;
 
         public OwnerController()
         {
-            ProRepo = new ProductRepo();
-            CateRepo = new CategoryRepo();
+            ProRepo = new ProductRepo(db);
+            CateRepo = new CategoryRepo(db);
 
         }
 
